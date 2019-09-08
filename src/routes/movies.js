@@ -5,7 +5,7 @@ var movies = require('../sample.json');
 
 //Get the array
 router.get('/', (req, res) => {
-    res.json(movies);
+    res.status(200).json(movies);
 });
 
 //Add one
@@ -21,21 +21,26 @@ router.post('/', (req, res) => {
         id = id.toString();
         const newMovie = { id, ...req.body };
         movies.push(newMovie);
-        res.json(movies);
+        res.status(200).json(movies);
     } else {
-        res.status(500).json({ error: 'You miss something.' });
+        res.status(400).json({ error: 'You miss something.' });
     }
 });
 
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
+    var exist = false;
     _.each(movies, (movie, i) => {
         if (movie.id == id) {
+            exist = true;
             movies.splice(i, 1);
-            res.send(movies);
+            res.status(200).json(movies);
         }
-    })
-    res.send(movies);
+    });
+    if (!exist) {
+        res.status(400).json({ error: 'ID Not Found.' });
+    };
+    res.status(200).json(movies);
 });
 
 //Update one
@@ -57,14 +62,14 @@ router.put('/:id', (req, res) => {
                 movie.director = director;
                 movie.year = year;
                 movie.rating = rating;
-                res.json(movies);
+                res.status(200).json(movies);
             }
         })
     } else {
-        res.status(500).json({ error: 'You miss something.' });
+        res.status(400).json({ error: 'You miss something.' });
     }
     if (!exist) {
-        res.status(500).json({ error: 'Not Exist.' });
+        res.status(400).json({ error: 'Not Exist.' });
     };
 });
 
