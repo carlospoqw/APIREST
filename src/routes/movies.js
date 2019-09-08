@@ -29,48 +29,49 @@ router.post('/', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
-    var exist = false;
-    _.each(movies, (movie, i) => {
-        if (movie.id == id) {
-            exist = true;
-            movies.splice(i, 1);
-            res.status(200).json(movies);
-        }
-    });
-    if (!exist) {
+    if (IsMovieFound(id, movies)) {
+        _.each(movies, (movie, i) => {
+            if (movie.id == id) {
+                movies.splice(i, 1);
+                res.status(200).json(movies);
+            }
+        });
+    } else {
         res.status(400).json({ error: 'ID Not Found.' });
     };
-    res.status(200).json(movies);
 });
 
 //Update one
 router.put('/:id', (req, res) => {
     const { id } = req.params;
     const { title, director, year, rating } = req.body;
-    //If Exist
+    if (IsMovieFound(id, movies)) {
+        if (title && director && year && rating) {
+            _.each(movies, (movie, i) => {
+                if (movie.id == id) {
+                    movie.title = title;
+                    movie.director = director;
+                    movie.year = year;
+                    movie.rating = rating;
+                    res.status(200).json(movies);
+                }
+            })
+        } else {
+            res.status(400).json({ error: 'You miss something.' });
+        }
+    } else {
+        res.status(400).json({ error: 'Not Exist.' });
+    };
+});
+
+function IsMovieFound(id, movies) {
     var exist = false;
     _.each(movies, (movie, i) => {
         if (movie.id == id) {
             exist = true;
         }
     });
-    //Change things
-    if (title && director && year && rating) {
-        _.each(movies, (movie, i) => {
-            if (movie.id == id) {
-                movie.title = title;
-                movie.director = director;
-                movie.year = year;
-                movie.rating = rating;
-                res.status(200).json(movies);
-            }
-        })
-    } else {
-        res.status(400).json({ error: 'You miss something.' });
-    }
-    if (!exist) {
-        res.status(400).json({ error: 'Not Exist.' });
-    };
-});
+    return exist;
+}
 
 module.exports = router;
