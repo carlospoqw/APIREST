@@ -9,7 +9,7 @@ app.set('json spaces',2);
 // middlewares
 app.use(morgan('combined'));
 app.use(express.urlencoded({extended:false}));
-app.use(express.json);
+app.use(express.json());
 
 // routes
 app.use(require('./routes/index'));
