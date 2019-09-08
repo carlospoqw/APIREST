@@ -12,14 +12,14 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const { title, director, year, rating } = req.body;
     if (title && director && year && rating) {
-        var UsedID = 1;
+        var id = 1;
         _.each(movies, (movie, i) => {
-            if (UsedID == parseInt(movie.id)) {
-                UsedID += 1;
+            if (id == parseInt(movie.id)) {
+                id += 1;
             }
         });
-        UsedID = UsedID.toString();
-        const newMovie = { UsedID, ...req.body };
+        id = id.toString();
+        const newMovie = { id, ...req.body };
         movies.push(newMovie);
         res.json(movies);
     } else {
