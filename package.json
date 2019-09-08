@@ -1,13 +1,13 @@
 {
   "name": "APIREST",
   "version": "1.0.0",
-  "description": "",
+  "description": "First APIREST",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Carlospoqw",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
